@@ -100,11 +100,11 @@ public class Grid : MonoBehaviour
         {
             MoveRight();
         }
-        else if (Input.GetKeyDown(KeyCode.Backspace))
-        {
-            grid[(int)currentCell.x, (int)currentCell.y].GetComponent<InputField>().text = "";
-            MoveLeft();
-        }
+        //else if (Input.GetKeyDown(KeyCode.Backspace))
+        //{
+        //    MoveLeft();
+        //    grid[(int)currentCell.x-1, (int)currentCell.y].GetComponent<InputField>().text = "";
+        //}
     }
 
     public string GetTextContent()

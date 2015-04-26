@@ -15,4 +15,9 @@ public class Cell : MonoBehaviour {
     {
         GameObject.FindWithTag("Grid").GetComponent<Grid>().currentCell = positionInGrid;
     }
+
+    public void ValueChanged()
+    {
+        GameObject.FindWithTag("Grid").GetComponent<Grid>().MoveRight();
+    }
 }
