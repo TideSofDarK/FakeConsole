@@ -1,4 +1,4 @@
 # FakeConsole
 ASCII art editor
 
-![Alt text](http://puu.sh/hqPom/2a4060b292.png)
+![Alt text](http://puu.sh/hs1HA/746ad1e3b3.png)
