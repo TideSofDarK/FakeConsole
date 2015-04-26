@@ -19,6 +19,11 @@ public class Grid : MonoBehaviour
 
     public void ReInit()
     {
+        ReInit(0,0);
+    }
+
+    private void ReInit(int width, int height)
+    {
         //gridWidth = (int)GetComponent<RectTransform>().sizeDelta.x / (gridCellWidth);
        //gridHeight = (int)GetComponent<RectTransform>().sizeDelta.y / (gridCellHeight);
 
@@ -33,8 +38,17 @@ public class Grid : MonoBehaviour
             }
         }
 
-        gridWidth = int.Parse(GameObject.FindWithTag("XField").GetComponent<InputField>().text);
-        gridHeight = int.Parse(GameObject.FindWithTag("YField").GetComponent<InputField>().text);
+        if (width == 0 && height == 0)
+        {
+            gridWidth = int.Parse(GameObject.FindWithTag("XField").GetComponent<InputField>().text);
+            gridHeight = int.Parse(GameObject.FindWithTag("YField").GetComponent<InputField>().text);
+        }
+        else
+        {
+            gridWidth = width;
+            gridHeight = height;
+        }
+        
 
         GetComponent<RectTransform>().sizeDelta = new Vector2(gridWidth * gridCellWidth, gridHeight * gridCellHeight);
 
@@ -124,6 +138,11 @@ public class Grid : MonoBehaviour
 
     public void LoadText(string text)
     {
+        int newHeight = text.Split('\n').Length - 1;
+        int newWidth = (text.Length-1)/newHeight;
+
+        ReInit(newWidth, newHeight);
+
         char[,] textArray = new char[gridWidth, gridHeight];
         text = text.Replace("\r\n", "").Replace("\n", "").Replace("\r", "");
         for (int y = gridHeight - 1; y >= 0; y--)

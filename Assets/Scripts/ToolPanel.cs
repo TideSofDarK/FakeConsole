@@ -55,6 +55,7 @@ public class ToolPanel : MonoBehaviour {
 
         if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
         {
+            grid.gameObject.SetActive(true);
             grid.LoadText(File.ReadAllText(ofd.FileName));
         }
     }
