@@ -5,11 +5,12 @@ using UnityEngine.UI;
 public class Cell : MonoBehaviour {
 
     public Vector2 positionInGrid;
-    public void SetColor()
+
+    void Start()
     {
-        GetComponentInChildren<Text>().color = GameObject.FindWithTag("Grid").GetComponent<Grid>().currentColor;
-        GameObject.FindWithTag("Grid").GetComponent<Grid>().MoveRight();
+        GetComponentInChildren<Text>().color = ColorRegistry.textColor;
     }
+
     public void SetCurrent()
     {
         GameObject.FindWithTag("Grid").GetComponent<Grid>().currentCell = positionInGrid;

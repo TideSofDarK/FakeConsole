@@ -16,10 +16,27 @@ public class Grid : MonoBehaviour
     public Vector2 currentCell;
 
     public Color currentColor = Color.white;
-    void Start()
+
+    public void ReInit()
     {
-        gridWidth = (int)GetComponent<RectTransform>().sizeDelta.x / (gridCellWidth);
-        gridHeight = (int)GetComponent<RectTransform>().sizeDelta.y / (gridCellHeight);
+        //gridWidth = (int)GetComponent<RectTransform>().sizeDelta.x / (gridCellWidth);
+       //gridHeight = (int)GetComponent<RectTransform>().sizeDelta.y / (gridCellHeight);
+
+        if (grid != null)
+        {
+            for (int x = 0; x < gridWidth; x++)
+            {
+                for (int y = 0; y < gridHeight; y++)
+                {
+                    Destroy(grid[x, y]);
+                }
+            }
+        }
+
+        gridWidth = int.Parse(GameObject.FindWithTag("XField").GetComponent<InputField>().text);
+        gridHeight = int.Parse(GameObject.FindWithTag("YField").GetComponent<InputField>().text);
+
+        GetComponent<RectTransform>().sizeDelta = new Vector2(gridWidth * gridCellWidth, gridHeight * gridCellHeight);
 
         grid = new GameObject[gridWidth, gridHeight];
 
@@ -30,7 +47,7 @@ public class Grid : MonoBehaviour
                 grid[x, y] = Instantiate(cellPrefab, new Vector3(), Quaternion.identity) as GameObject;
                 grid[x, y].transform.SetParent(transform);
                 grid[x, y].transform.localPosition = Vector3.zero;
-                grid[x, y].transform.localPosition = new Vector3(gridCellWidth / 2, gridCellHeight / 2, 0f) + new Vector3(x * gridCellWidth, y * gridCellHeight, 0f) - new Vector3(GetComponent<RectTransform>().sizeDelta.x/2f, GetComponent<RectTransform>().sizeDelta.y/2f);
+                grid[x, y].transform.localPosition = new Vector3(gridCellWidth / 2, gridCellHeight / 2, 0f) + new Vector3(x * gridCellWidth, y * gridCellHeight, 0f) - new Vector3(GetComponent<RectTransform>().sizeDelta.x / 2f, GetComponent<RectTransform>().sizeDelta.y / 2f);
                 grid[x, y].GetComponent<Cell>().positionInGrid = new Vector2(x, y);
             }
         }
@@ -52,6 +69,17 @@ public class Grid : MonoBehaviour
         SelectCell();
     }
 
+    public void MoveLeft()
+    {
+        if (currentCell.x > 0) currentCell.x--;
+        else if (currentCell.y < gridHeight - 1)
+        {
+            currentCell.y++;
+            currentCell.x = gridWidth - 1;
+        }
+        SelectCell();
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -66,17 +94,16 @@ public class Grid : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            if (currentCell.x > 0) currentCell.x--;
-            else if (currentCell.y < gridHeight-1)
-            {
-                currentCell.y++;
-                currentCell.x = gridWidth - 1;
-            }
-            SelectCell();
+            MoveLeft();
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             MoveRight();
+        }
+        else if (Input.GetKeyDown(KeyCode.Backspace))
+        {
+            grid[(int)currentCell.x, (int)currentCell.y].GetComponent<InputField>().text = "";
+            MoveLeft();
         }
     }
 
@@ -113,6 +140,17 @@ public class Grid : MonoBehaviour
             {
                 if (textArray[x, y].ToString() == "\u00A0") grid[x, y].GetComponentInChildren<InputField>().text = "";
                 else grid[x, y].GetComponentInChildren<InputField>().text = textArray[x, y].ToString();
+            }
+        }
+    }
+
+    public void SetColor(Color color)
+    {
+        for (int y = gridHeight - 1; y >= 0; y--)
+        {
+            for (int x = 0; x < gridWidth; x++)
+            {
+                grid[x, y].GetComponentInChildren<Text>().color = color;
             }
         }
     }
